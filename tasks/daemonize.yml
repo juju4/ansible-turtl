@@ -1,0 +1,48 @@
+---
+
+- debug: var=ansible_service_mgr
+- block:
+    - name: install systemd configuration
+      template:
+        src: systemd-turtl.service.j2
+#        dest: /etc/systemd/system/multi-user.target.wants/turtl.service
+        dest: /lib/systemd/system/turtl.service
+        mode: '0644'
+        backup: yes
+      register: systemd
+
+    - name: reload systemd
+      systemd:
+        daemon_reload: yes
+        name: turtl
+      when: systemd.changed
+
+    - name: enable and start turtl systemd service
+      service:
+        name: turtl
+        enabled: yes
+        state: 'started'
+  when: >
+    ansible_service_mgr == 'systemd' and
+    (
+      (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int >= 16) or
+      (ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7)
+    )
+- block:
+    - name: check if nodejs is running
+      shell: "ps axu |grep [n]odejs"
+      changed_when: false
+      register: ps
+      ignore_errors: true
+    - debug:
+        var: ps
+    - name: non-systemd | manual start of turtl
+      shell: >
+        nohup {{ nodejs_path | default('/usr/bin/nodejs') }} {{ turtl_working_dir }}/server.js &
+      args:
+        chdir: "{{ turtl_working_dir }}"
+      become: yes
+      become_user: "{{ turtl_user }}"
+      when: not ps.stdout
+  when: >
+    ansible_service_mgr != 'systemd'

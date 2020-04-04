@@ -1,0 +1,18 @@
+---
+
+- stat: path={{ turtl_root }}/.ansible_dbschemaload
+  register: createdb
+- block:
+    - name: Create db
+      command: >
+        {{ nodejs_path | default('/usr/bin/nodejs') }} {{ turtl_working_dir }}/tools/create-db-schema.js
+      args:
+        chdir: "{{ turtl_root }}"
+      become: yes
+      become_user: "{{ turtl_user }}"
+      register: dbschemaload
+    - name: Add marker for db created
+      file: dest={{ turtl_root }}/.ansible_dbschemaload state=touch
+      become: yes
+      become_user: "{{ turtl_user }}"
+  when: not touchdbschemaload.stat.exists

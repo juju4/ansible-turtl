@@ -1,0 +1,44 @@
+---
+
+- name: ensure turtl dependencies are present
+  package:
+    name:
+      - git
+      - nodejs
+    state: present
+  register: pkg_result
+  until: pkg_result is success
+
+- name: ensure turtl user exists
+  user:
+    name: "{{ turtl_user }}"
+    home: "{{ turtl_home }}"
+
+- name: git clone turtl repository
+  git:
+    repo: https://github.com/turtl/server
+    dest: "{{ turtl_working_dir }}"
+    version: "{{ turtl_version | default('4faa272e8a274582327ef3f2dcb18caf2124eeff') }}"
+  become: yes
+  become_user: "{{ turtl_user }}"
+
+- name: install server configuration
+  template:
+    src: config.yaml.j2
+    dest: "{{ turtl_working_dir }}/config/config.yaml"
+    mode: '0644'
+    backup: yes
+
+- name: ensure plugins directory exists
+  file:
+    path: "{{ turtl_working_dir }}/server/plugins"
+    state: directory
+    mode: '0755'
+
+- name: Install turtl npm packages
+  npm:
+    path: "{{ turtl_working_dir }}/server"
+  become: yes
+  become_user: "{{ turtl_user }}"
+
+- include: daemonize.yml

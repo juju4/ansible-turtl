@@ -1,0 +1,7 @@
+---
+# defaults file for juju4.turtl
+
+turtl_user: www-turtl
+turtl_home: '/var/www-turtl'
+
+turtl_working_dir: "{{ turtl_home }}/src"

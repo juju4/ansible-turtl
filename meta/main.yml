@@ -1,0 +1,17 @@
+galaxy_info:
+  author: juju4
+  description: Turtl notes server install
+  license: BSD
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - xenial
+  galaxy_tags:
+    - notes
+    - office
+    - productivity
+    - server
+dependencies:
+  - geerlingguy.postgresql

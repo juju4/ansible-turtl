@@ -1,0 +1,21 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=Turtl Node.js service
+Requires=network.target
+
+[Service]
+Type=simple
+ExecStart={{ nodejs_path | default('/usr/bin/nodejs') }} {{ turtl_working_dir }}/server.js
+WorkingDirectory={{ turtl_working_dir }}
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+SyslogIdentifier=turtl-nodejs
+User={{ turtl_user }}
+Group=nobody
+Environment=NODE_ENV=production
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
