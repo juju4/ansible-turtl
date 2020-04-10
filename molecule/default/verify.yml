@@ -29,6 +29,7 @@
     uri:
       url: http://localhost:8181
     register: web
+  - debug: web
   - name: Validate network request output
     assert:
-      that: web.stdout == '{"greeting":"Hi."}'
+      that: web.json.greeting == 'Hi.'
