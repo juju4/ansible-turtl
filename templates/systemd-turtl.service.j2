@@ -12,7 +12,8 @@ RestartSec=10
 StandardOutput=syslog
 SyslogIdentifier=turtl-nodejs
 User={{ turtl_user }}
-Group=nobody
+Group={% if ansible_os_family == "RedHat" %}nobody{% else %}nogroup{% endif %}
+
 Environment=NODE_ENV=production
 PrivateTmp=true
 
