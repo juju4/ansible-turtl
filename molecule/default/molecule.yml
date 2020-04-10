@@ -17,9 +17,6 @@ platforms:
     #   no_proxy: ${no_proxy}
 provisioner:
   name: ansible
-  config_options:
-    defaults:
-      verbosity: 3
 scenario:
   name: default
 verifier:
