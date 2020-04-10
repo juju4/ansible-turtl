@@ -1,5 +1,6 @@
 galaxy_info:
   author: juju4
+  role_name: turtl
   description: Turtl notes server install
   license: BSD
   min_ansible_version: 2.9
