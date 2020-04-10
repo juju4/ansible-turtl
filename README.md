@@ -1,5 +1,5 @@
-[![Build Status - Master](https://travis-ci.org/juju4/ansible-turtl.svg?branch=master)](https://travis-ci.org/juju4/ansible-turtl)
-[![Build Status - Devel](https://travis-ci.org/juju4/ansible-turtl.svg?branch=devel)](https://travis-ci.org/juju4/ansible-turtl/branches)
+[![Build Status - Master](https://travis-ci.com/juju4/ansible-turtl.svg?branch=master)](https://travis-ci.com/juju4/ansible-turtl)
+[![Build Status - Devel](https://travis-ci.com/juju4/ansible-turtl.svg?branch=devel)](https://travis-ci.com/juju4/ansible-turtl/branches)
 
 # Turtl server install
 
