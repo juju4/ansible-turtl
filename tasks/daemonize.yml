@@ -10,6 +10,19 @@
         mode: '0644'
         backup: yes
       register: systemd
+      ignore_errors: true
+    - block:
+        - include: "immutable.yml target_dir=/lib/systemd/system state=pre"
+        - include: "immutable.yml target_dir=/lib/systemd/system/turtl.service state=pre"
+        - name: install systemd configuration
+          template:
+            src: systemd-turtl.service.j2
+            dest: /lib/systemd/system/turtl.service
+            mode: '0644'
+            backup: yes
+          register: systemd
+        - include: "immutable.yml target_dir=/lib/systemd/system state=post"
+      when: systemd is failed
 
     - name: reload systemd
       systemd:
