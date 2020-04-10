@@ -1,6 +1,7 @@
 ---
 
-- stat: path={{ turtl_root }}/.ansible_dbschemaload
+- name: Check if marker for db created
+  stat: path={{ turtl_root }}/.ansible_dbschemaload
   register: createdb
 - block:
     - name: Create db

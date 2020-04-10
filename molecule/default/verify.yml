@@ -26,9 +26,9 @@
       host: localhost
       port: 8181
   - name: check if turtl answering network
-    command: curl -sf http://localhost:8181
-    register: curl
-    changed_when: false
-  - name: Validate curl output
+    uri:
+      url: http://localhost:8181
+    register: web
+  - name: Validate network request output
     assert:
-      that: curl.stdout == '{"greeting":"Hi."}'
+      that: web.stdout == '{"greeting":"Hi."}'
